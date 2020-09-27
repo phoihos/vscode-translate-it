@@ -1,7 +1,7 @@
 {
 	"name": "translate-it",
 	"displayName": "Translate it",
-	"description": "Text translator powered by Google",
+	"description": "Text/Comment Translator powered by Google Translate",
 	"icon": "images/icon.png",
 	"publisher": "phoihos",
 	"repository": {

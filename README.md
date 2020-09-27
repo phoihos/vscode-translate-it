@@ -1,12 +1,12 @@
 # Translate it
 
-This extension is a text translator powered by **Google Translate**.
+This extension is a text/comment translator powered by **Google Translate**.
 
 ## Features
 
 - You can translate selected texts from `Source Language` to `Target Language`
     - Automatically detect `Source Language` and `Target Language`
-        - `Target Language` is your prefer display language of VSCode
+        - `Automatic Target Language` is your prefer display language of VSCode
         - You can also change `Target Language` in the **Extension Settings**
 - Comments only translated in selected programming codes
     - Supports more than 30 programming languages
@@ -23,7 +23,8 @@ To install this extension go to `View->Extensions` and search for `Translate it`
 ## Usage
 
 To use the extension go to the Command Palette (`Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows) and launch `Translate it` command.
-> You can use keyboard shortcut `Shift+Alt+T`.  
+> You can use keyboard shortcut `Shift+Alt+T`.
+
 > And you can remove text decorations, if you execute `Translate it` command again with empty selection.
 
 ![Demo 1](./images/readme/demo1.gif)
@@ -35,7 +36,7 @@ Or select `Translate it` from context menu (`Right-click` on editor).
 
 ## History Logging
 
-You can find the histories of translations in the **Output Channel**
+You can find the histories of translation in the **Output Channel**
 
 ![Demo 3](./images/readme/demo3.png)
 
