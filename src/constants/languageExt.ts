@@ -1,0 +1,52 @@
+interface ILangExtItem {
+    [key: string]: string
+}
+
+const langExtTable: ILangExtItem = {
+    bat: 'bat',
+    c: 'cpp',
+    clojure: 'clj',
+    coffeescript: 'coffee',
+    cpp: 'cpp',
+    csharp: 'cpp',
+    css: 'css',
+    fsharp: 'fs',
+    go: 'go',
+    groovy: 'groovy',
+    handlebars: 'handlebars',
+    hlsl: 'hlsl',
+    html: 'html',
+    ini: 'ini',
+    java: 'java',
+    javascript: 'js',
+    javascriptreact: 'js',
+    json: 'json',
+    jsonc: 'json',
+    less: 'less',
+    lua: 'lua',
+    'objective-c': 'm',
+    'objective-cpp': 'mm',
+    perl: 'perl',
+    perl6: 'perl',
+    php: 'jsp',
+    powershell: 'ps1',
+    python: 'py',
+    r: 'r',
+    razor: 'cshtml',
+    ruby: 'rb',
+    rust: 'rs',
+    scss: 'scss',
+    shaderlab: 'shader',
+    shellscript: 'sh',
+    swift: 'swift',
+    typescript: 'ts',
+    typescriptreact: 'ts',
+    vb: 'vb',
+    xml: 'html',
+    xsl: 'html',
+    yaml: 'yaml'
+};
+
+export default function getLanguageExt(languageId: string) {
+    return langExtTable[languageId] ?? 'js';
+}
