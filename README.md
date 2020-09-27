@@ -4,11 +4,11 @@ This extension is a text/comment translator powered by **Google Translate**.
 
 ## Features
 
-- You can translate selected texts from `Source Language` to `Target Language`
+- Translate selected texts from `Source Language` to `Target Language`
     - Automatically detect `Source Language` and `Target Language`
         - `Automatic Target Language` is your prefer display language of VSCode
         - You can also change `Target Language` in the **Extension Settings**
-- Comments only translated in selected programming codes
+- Translate only comments when you select comments and codes
     - Supports more than 30 programming languages
     - See below a [demo](#usage)
 - Display **Hover Message** with translated text
