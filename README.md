@@ -11,7 +11,7 @@ This extension is a text/comment translator powered by **Google Translate**.
 - Translate only comments when you select comments and codes
     - Supports more than 30 programming languages
     - See below a [demo](#usage)
-- Display **Hover Message** with translated text
+- Display translated result as **Hover Message**
     - See below a [demo](#usage)
 - And history logging in the **Output Channel**
     - See below a [demo](#history-logging)
@@ -36,7 +36,7 @@ Or select `Translate it` from context menu (`Right-click` on editor).
 
 ## History Logging
 
-You can find the histories of translation in the **Output Channel**
+You can find the histories of translation in the **Output Channel**.
 
 ![Demo 3](./images/readme/demo3.png)
 
@@ -46,9 +46,9 @@ Table of contributed settings (prefix "translateIt."):
 
 | Name                     | Default       | Description                                                                                            |
 | ------------------------ | ------------- | ------------------------------------------------------------------------------------------------------ |
-| hoverDisplay             | `true`        | Display hover with translated result                                                                   |
-| hoverDisplayHeader       | `true`        | Display hover with header area : `Source Language → Target Language`                                  |
-| hoverMultiLineFormatting | `true`        | Display hover with Multi-Line Formatting                                                               |
+| hoverDisplay             | `true`        | Display translated result as hover message (if `false`, always open **Output Channel** instead)                                                                   |
+| hoverDisplayHeader       | `true`        | Display hover message with header area : `"Source Language → Target Language"`                                  |
+| hoverMultiLineFormatting | `true`        | Display hover message with Multi-Line Formatting                                                               |
 | targetLanguage           | `"Automatic"` | Target language ([list the supported](https://cloud.google.com/translate/docs/languages)) translate to |
 
 ## Issues

@@ -59,17 +59,17 @@
 				"translateIt.hoverDisplay": {
 					"type": "boolean",
 					"default": true,
-					"description": "Display hover with translated result"
+					"description": "Display translated result as hover message"
 				},
 				"translateIt.hoverDisplayHeader": {
 					"type": "boolean",
 					"default": true,
-					"description": "Display hover with header area : `Source Language → Target Language`"
+					"description": "Display hover message with header area : \"Source Language → Target Language\""
 				},
 				"translateIt.hoverMultiLineFormatting": {
 					"type": "boolean",
 					"default": true,
-					"description": "Display hover with Multi-Line Formatting"
+					"description": "Display hover message with Multi-Line Formatting"
 				},
 				"translateIt.targetLanguage": {
 					"type": "string",
