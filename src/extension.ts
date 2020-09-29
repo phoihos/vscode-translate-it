@@ -9,7 +9,10 @@ import getConfiguration from './configuration'
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	const decoBgColor = new vscode.ThemeColor('editor.wordHighlightStrongBackground');
-	const decoType = vscode.window.createTextEditorDecorationType({ backgroundColor: decoBgColor })
+	const decoType = vscode.window.createTextEditorDecorationType({
+		backgroundColor: decoBgColor,
+		rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed
+	});
 
 	const outputChannel = vscode.window.createOutputChannel('Translate it');
 
@@ -17,6 +20,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const document = editor.document;
 		const selections = editor.selections;
 		const languageId = document.languageId;
+		const eol = (document.eol == vscode.EndOfLine.LF) ? '\n' : '\r\n';
 
 		if (selections.length == 1 && selections[0].isEmpty) {
 			editor.setDecorations(decoType, []);
@@ -25,34 +29,54 @@ export function activate(context: vscode.ExtensionContext) {
 
 		const config = getConfiguration();
 
-		let text = '';
+		const selectedTexts: string[] = [];
+		const selectedRanges: vscode.Range[] = [];
+
 		for (const selection of selections) {
-			text += document.getText(selection);
+			let line = selection.start.line;
+			do {
+				const { text, range, firstNonWhitespaceCharacterIndex } = document.lineAt(line);
+
+				const startIndex = range.start.isBefore(selection.start) ?
+					selection.start.character : range.start.character;
+				const startCharacter = Math.max(startIndex, firstNonWhitespaceCharacterIndex);
+				const endCharacter = range.end.isAfter(selection.end) ?
+					selection.end.character : range.end.character;
+
+				selectedTexts.push(text.substring(startCharacter, endCharacter));
+				selectedRanges.push(new vscode.Range(line, startCharacter, line, endCharacter));
+			} while (line++ < selection.end.line);
 		}
-		text = parseText(text, languageId);
+
+		const [parsedText, parsedRanges] = parseText(selectedTexts, eol, selectedRanges, languageId);
 
 		await vscode.window.withProgress({
 			title: 'Translating...',
 			location: vscode.ProgressLocation.Notification,
 		}, async () => {
-			const [translated, fromTo] = await translateText(text, config.targetLanguage);
+			const [translatedText, fromTo] = await translateText(parsedText, config.targetLanguage);
 			const horizontalRule = '-'.repeat(Math.max(fromTo.length, 3));
 			const header = `${fromTo}\n${horizontalRule}\n`;
 
 			if (config.hoverDisplay) {
 				const hoverMessage = new vscode.MarkdownString();
 				hoverMessage.appendMarkdown(config.hoverDisplayHeader ? header.replace(/\n/g, '\n\n') : '');
-				hoverMessage.appendMarkdown(config.hoverMultiLineFormatting ? translated.replace(/\n/g, '\n\n') : translated);
+				hoverMessage.appendMarkdown(config.hoverMultiLineFormatting ? translatedText.replace(/\n/g, '\n\n') : translatedText);
 				hoverMessage.isTrusted = true;
 
-				const decoOptions = selections.map(e => ({ hoverMessage: hoverMessage, range: e }));
-
+				const decoOptions = parsedRanges.map(e => ({ hoverMessage: hoverMessage, range: e }));
 				editor.setDecorations(decoType, decoOptions);
+	
+				const lastPosition = selections[selections.length - 1].end;
+				editor.selection = new vscode.Selection(lastPosition, lastPosition);
+	
+				editor.revealRange(parsedRanges[0]);
+				
 				vscode.commands.executeCommand('editor.action.showHover');
 			}
 
-			outputChannel.show(!config.hoverDisplay);
-			outputChannel.appendLine(header + translated);
+			if (!config.hoverDisplay) outputChannel.show();
+			outputChannel.appendLine(header + translatedText);
 			outputChannel.appendLine('');
 		});
 	}
