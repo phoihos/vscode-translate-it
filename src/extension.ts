@@ -20,9 +20,9 @@ export function activate(context: vscode.ExtensionContext) {
 		const document = editor.document;
 		const selections = editor.selections;
 		const languageId = document.languageId;
-		const eol = (document.eol == vscode.EndOfLine.LF) ? '\n' : '\r\n';
+		const eol = (document.eol === vscode.EndOfLine.LF) ? '\n' : '\r\n';
 
-		if (selections.length == 1 && selections[0].isEmpty) {
+		if (selections.length === 1 && selections[0].isEmpty) {
 			editor.setDecorations(decoType, []);
 			return;
 		}
@@ -66,12 +66,12 @@ export function activate(context: vscode.ExtensionContext) {
 
 				const decoOptions = parsedRanges.map(e => ({ hoverMessage: hoverMessage, range: e }));
 				editor.setDecorations(decoType, decoOptions);
-	
+
 				const lastPosition = selections[selections.length - 1].end;
 				editor.selection = new vscode.Selection(lastPosition, lastPosition);
-	
+
 				editor.revealRange(selections[0]);
-				
+
 				vscode.commands.executeCommand('editor.action.showHover');
 			}
 
