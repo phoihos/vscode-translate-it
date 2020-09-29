@@ -70,14 +70,14 @@ export function activate(context: vscode.ExtensionContext) {
 				const lastPosition = selections[selections.length - 1].end;
 				editor.selection = new vscode.Selection(lastPosition, lastPosition);
 	
-				editor.revealRange(parsedRanges[0]);
+				editor.revealRange(selections[0]);
 				
 				vscode.commands.executeCommand('editor.action.showHover');
 			}
 
-			if (!config.hoverDisplay) outputChannel.show();
 			outputChannel.appendLine(header + translatedText);
 			outputChannel.appendLine('');
+			if (!config.hoverDisplay) outputChannel.show();
 		});
 	}
 
