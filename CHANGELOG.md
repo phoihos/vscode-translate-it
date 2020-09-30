@@ -2,8 +2,12 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
+## [1.2.2] - 2020-09-30
+- Fixed : Always translating a whole line text even though select a word
+- Fixed : Does not display hover when a last line is empty
+
 ## [1.2.0] - 2020-09-30
-- Added : Fit selection only for parsed only comments
+- Added : Fitting the selection ranges for parsed comments only
 - Added : Changing target language on hover display and re-translating
 - Fixed : Translated result does not remove whitespace characters
 - Fixed : Output Channel always showing

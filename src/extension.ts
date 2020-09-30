@@ -16,9 +16,9 @@ export function activate(context: vscode.ExtensionContext) {
 	const outputChannel = vscode.window.createOutputChannel('Translate it');
 	const config = getConfiguration();
 
-	const latestTranslationRange = new WeakMap<vscode.TextEditor, vscode.Range[]>();
+	const latestTranslationMap = new WeakMap<vscode.TextEditor, vscode.Selection[]>();
 
-	async function translate(editor: vscode.TextEditor, ranges: vscode.Range[]) {
+	async function translate(editor: vscode.TextEditor, selections: vscode.Selection[]) {
 		const document = editor.document;
 		const languageId = document.languageId;
 		const eol = (document.eol === vscode.EndOfLine.LF) ? '\n' : '\r\n';
@@ -26,20 +26,20 @@ export function activate(context: vscode.ExtensionContext) {
 		const lineTexts: string[] = [];
 		const lineRanges: vscode.Range[] = [];
 
-		for (const range of ranges) {
-			let line = range.start.line;
+		for (const selection of selections) {
+			let line = selection.start.line;
 			do {
 				const { text, range, firstNonWhitespaceCharacterIndex } = document.lineAt(line);
 
-				const startIndex = range.start.isBefore(range.start) ?
-					range.start.character : range.start.character;
+				const startIndex = range.start.isBefore(selection.start) ?
+					selection.start.character : range.start.character;
 				const startCharacter = Math.max(startIndex, firstNonWhitespaceCharacterIndex);
-				const endCharacter = range.end.isAfter(range.end) ?
-					range.end.character : range.end.character;
+				const endCharacter = range.end.isAfter(selection.end) ?
+					selection.end.character : range.end.character;
 
 				lineTexts.push(text.substring(startCharacter, endCharacter));
 				lineRanges.push(new vscode.Range(line, startCharacter, line, endCharacter));
-			} while (line++ < range.end.line);
+			} while (line++ < selection.end.line);
 		}
 
 		const { parsedText, parsedRanges } = parseText(lineTexts, eol, lineRanges, languageId);
@@ -64,10 +64,10 @@ export function activate(context: vscode.ExtensionContext) {
 				const decoOptions = parsedRanges.map(e => ({ hoverMessage: hoverMessage, range: e }));
 				editor.setDecorations(decoType, decoOptions);
 
-				const lastPosition = ranges[ranges.length - 1].end;
+				const lastPosition = parsedRanges[parsedRanges.length - 1].end;
 				editor.selection = new vscode.Selection(lastPosition, lastPosition);
 
-				editor.revealRange(ranges[0]);
+				editor.revealRange(parsedRanges[0]);
 
 				vscode.commands.executeCommand('editor.action.showHover');
 			}
@@ -80,7 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const runCallback = async (editor: vscode.TextEditor) => {
 		const selections = editor.selections;
-		latestTranslationRange.set(editor, selections);
+		latestTranslationMap.set(editor, selections);
 
 		if (selections.length === 1 && selections[0].isEmpty)
 			return editor.setDecorations(decoType, []);
@@ -97,10 +97,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 		await config.setTargetLanguage(pickedLanguage);
 
-		const ranges = latestTranslationRange.get(editor);
-		if (!ranges) return;
+		const selections = latestTranslationMap.get(editor);
+		if (!selections) return;
 
-		return translate(editor, ranges);
+		return translate(editor, selections);
 	}
 
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('translateIt.changeTargetLanguage', changeTargetLanguageCallback));
