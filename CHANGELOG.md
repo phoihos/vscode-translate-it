@@ -4,7 +4,7 @@ All notable changes to the "Translate it" extension will be documented in this f
 
 ## [1.2.2] - 2020-09-30
 - Fixed : Always translating a whole line text even though select a word
-- Fixed : Does not display hover when a last line is empty
+- Fixed : Does not display hover when selected last line is empty
 
 ## [1.2.0] - 2020-09-30
 - Added : Fitting the selection ranges for parsed comments only
