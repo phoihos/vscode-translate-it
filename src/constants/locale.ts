@@ -122,3 +122,7 @@ export function getLocale(displayLanguage: string) {
 export function getDisplayLanguage(locale: string) {
     return Object.keys(localeTable).find(key => localeTable[key] === locale) ?? 'Automatic';
 }
+
+export function getSupportedLanguages() {
+    return Object.keys(localeTable);
+}

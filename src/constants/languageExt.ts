@@ -29,6 +29,7 @@ const langExtTable: ILangExtItem = {
     perl: 'perl',
     perl6: 'perl',
     php: 'jsp',
+    plaintext: 'txt',
     powershell: 'ps1',
     python: 'py',
     r: 'r',
