@@ -18,14 +18,14 @@ This extension is a text/comment translator powered by **Google Translate**.
 
 ## Installation
 
-To install this extension go to `View->Extensions` and search for `Translate it`. Next click Install and then Reload.
+To install this extension go to `View->Extensions` and search for `Translate it`. Next click Install.
 
 ## Usage
 
 To use the extension go to the Command Palette (`Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows) and launch `Translate it` command.
-> You can use keyboard shortcut `Shift+Alt+T`.
+> Recommends to use keyboard shortcut `Shift+Alt+T`
 
-> And you can remove text decorations, if you execute `Translate it` command again with empty selection.
+And you can remove translation highlight, if you execute `Translate it` command again with empty selection.
 
 ![Demo 1](./images/readme/demo1.gif)
 
