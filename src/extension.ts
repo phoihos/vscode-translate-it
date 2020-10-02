@@ -5,6 +5,9 @@ import parseText from './textParser';
 import translateText from './textTranslator'
 import getConfiguration from './configuration'
 
+type IProgress = vscode.Progress<{ message?: string; increment?: number }>;
+type TaskHandler = (progress: IProgress) => Thenable<void>;
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -18,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const latestTranslationMap = new WeakMap<vscode.TextEditor, vscode.Selection[]>();
 
-	async function translate(editor: vscode.TextEditor, selections: vscode.Selection[]) {
+	async function translate(editor: vscode.TextEditor, selections: vscode.Selection[], preTaskHandler?: TaskHandler) {
 		const document = editor.document;
 		const languageId = document.languageId;
 		const eol = (document.eol === vscode.EndOfLine.LF) ? '\n' : '\r\n';
@@ -45,18 +48,24 @@ export function activate(context: vscode.ExtensionContext) {
 		const { parsedText, parsedRanges } = parseText(lineTexts, eol, lineRanges, languageId);
 
 		await vscode.window.withProgress({
-			title: 'Translating...',
 			location: vscode.ProgressLocation.Notification,
-		}, async () => {
-			const { translatedText, sourceLanguage: from, targetLanguage: to } =
-				await translateText(parsedText, config.targetLanguage);
+		}, async (progress) => {
+			await preTaskHandler?.(progress);
 
-			const hline = '-'.repeat(from.length + to.length + 3);
+			const targetLanguage = config.targetLanguage;
+
+			progress.report({ message: `Translating to "${targetLanguage}" ...` });
+
+			const { translatedText, sourceLanguage: from, targetLanguage: to } =
+				await translateText(parsedText, targetLanguage);
+
+			const command = 'command:translateIt.changeTargetLanguage';
+			const hr = '-'.repeat(from.length + to.length + 3);
 
 			if (config.hoverDisplay) {
 				const hoverMessage = new vscode.MarkdownString();
 				hoverMessage.appendMarkdown(config.hoverDisplayHeader ?
-					`${from} → [${to}](command:translateIt.changeTargetLanguage)\n\n${hline}\n\n` : '');
+					`${from} → [${to}](${command})\n\n${hr}\n\n` : '');
 				hoverMessage.appendMarkdown(config.hoverMultiLineFormatting ?
 					translatedText.replace(/\n/g, '\n\n') : translatedText);
 				hoverMessage.isTrusted = true;
@@ -69,10 +78,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 				editor.revealRange(parsedRanges[0]);
 
-				vscode.commands.executeCommand('editor.action.showHover');
+				await vscode.commands.executeCommand('editor.action.showHover');
 			}
 
-			outputChannel.appendLine(`${from} → ${to}\n${hline}\n` + translatedText);
+			outputChannel.appendLine(`${from} → ${to}\n${hr}\n` + translatedText);
 			outputChannel.appendLine('');
 			if (!config.hoverDisplay) outputChannel.show();
 		});
@@ -95,12 +104,15 @@ export function activate(context: vscode.ExtensionContext) {
 		const pickedLanguage = await vscode.window.showQuickPick(config.supportedLanguages, quickPickOptions);
 		if (!pickedLanguage || pickedLanguage === config.targetLanguage) return;
 
-		await config.setTargetLanguage(pickedLanguage);
-
 		const selections = latestTranslationMap.get(editor);
 		if (!selections) return;
 
-		return translate(editor, selections);
+		const preTaskHandler = (progress: IProgress) => {
+			progress.report({ message: `Changing target language to "${pickedLanguage}" ...` });
+			return config.updateTargetLanguage(pickedLanguage);
+		}
+
+		return translate(editor, selections, preTaskHandler);
 	}
 
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('translateIt.changeTargetLanguage', changeTargetLanguageCallback));

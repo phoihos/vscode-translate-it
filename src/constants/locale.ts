@@ -116,11 +116,14 @@ const localeTable: ILocaleItem = {
 };
 
 export function getLocale(displayLanguage: string) {
-    return localeTable[displayLanguage] ?? 'en';
+    return localeTable[displayLanguage] ?? 'zz';
 }
 
 export function getDisplayLanguage(locale: string) {
-    return Object.keys(localeTable).find(key => localeTable[key] === locale) ?? 'Automatic';
+    const codes = locale.split('-');
+    const locales = codes.length > 1 ? [locale, codes[0]] : [locale];
+
+    return Object.keys(localeTable).find(key => locales.includes(localeTable[key])) ?? 'Unknown';
 }
 
 export function getSupportedLanguages() {
