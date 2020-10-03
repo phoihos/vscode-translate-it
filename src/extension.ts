@@ -5,8 +5,8 @@ import parseText from './textParser';
 import translateText from './textTranslator'
 import getConfiguration from './configuration'
 
-type IProgress = vscode.Progress<{ message?: string; increment?: number }>;
-type TaskHandler = (progress: IProgress) => Thenable<void>;
+type ITaskProgress = vscode.Progress<{ message?: string; increment?: number }>;
+type TaskHandler = (progress: ITaskProgress) => Thenable<void>;
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -26,32 +26,31 @@ export function activate(context: vscode.ExtensionContext) {
 		const languageId = document.languageId;
 		const eol = (document.eol === vscode.EndOfLine.LF) ? '\n' : '\r\n';
 
-		const lineTexts: string[] = [];
-		const lineRanges: vscode.Range[] = [];
-
-		for (const selection of selections) {
-			let line = selection.start.line;
-			do {
-				const { text, range, firstNonWhitespaceCharacterIndex } = document.lineAt(line);
-
-				const startIndex = range.start.isBefore(selection.start) ?
-					selection.start.character : range.start.character;
-				const startCharacter = Math.max(startIndex, firstNonWhitespaceCharacterIndex);
-				const endCharacter = range.end.isAfter(selection.end) ?
-					selection.end.character : range.end.character;
-
-				lineTexts.push(text.substring(startCharacter, endCharacter));
-				lineRanges.push(new vscode.Range(line, startCharacter, line, endCharacter));
-			} while (line++ < selection.end.line);
-		}
-
-		const { parsedText, parsedRanges } = parseText(lineTexts, eol, lineRanges, languageId);
-
 		await vscode.window.withProgress({
-			location: vscode.ProgressLocation.Notification,
+			location: vscode.ProgressLocation.Notification
 		}, async (progress) => {
 			await preTaskHandler?.(progress);
 
+			const lineTexts: string[] = [];
+			const lineRanges: vscode.Range[] = [];
+
+			for (const selection of selections) {
+				let line = selection.start.line;
+				do {
+					const { text, range, firstNonWhitespaceCharacterIndex } = document.lineAt(line);
+
+					const startIndex = range.start.isBefore(selection.start) ?
+						selection.start.character : range.start.character;
+					const startCharacter = Math.max(startIndex, firstNonWhitespaceCharacterIndex);
+					const endCharacter = range.end.isAfter(selection.end) ?
+						selection.end.character : range.end.character;
+
+					lineTexts.push(text.substring(startCharacter, endCharacter));
+					lineRanges.push(new vscode.Range(line, startCharacter, line, endCharacter));
+				} while (line++ < selection.end.line);
+			}
+
+			const { parsedText, parsedRanges } = parseText(lineTexts, eol, lineRanges, languageId);
 			const targetLanguage = config.targetLanguage;
 
 			progress.report({ message: `Translating to "${targetLanguage}" ...` });
@@ -107,7 +106,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const selections = latestTranslationMap.get(editor);
 		if (!selections) return;
 
-		const preTaskHandler = (progress: IProgress) => {
+		const preTaskHandler = (progress: ITaskProgress) => {
 			progress.report({ message: `Changing target language to "${pickedLanguage}" ...` });
 			return config.updateTargetLanguage(pickedLanguage);
 		}
