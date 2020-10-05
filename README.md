@@ -12,6 +12,7 @@ This extension is a text/comment translator powered by **Google Translate**.
     - Supports more than 30 programming languages
     - See below a [demo](#usage)
 - Display translated result as **Hover Message**
+    - Click **Target Language** on header of hover message to change the `Target Language`
     - See below a [demo](#usage)
 - And history logging in the **Output Channel**
     - See below a [demo](#history-logging)
