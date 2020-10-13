@@ -54,8 +54,8 @@ Table of contributed settings (prefix "translateIt."):
 
 ## Issues
 
-If you find any problems using this extension or you want to propose new features to it, feel free to open an issue on [Github](https://github.com/phoihos/translate-it/issues).
+If you find any problems using this extension or you want to propose new features to it, feel free to open an issue on [Github](https://github.com/phoihos/vscode-translate-it/issues).
 
 ## Release Notes
 
-Detailed Release Notes are available [here](https://github.com/phoihos/translate-it/blob/master/CHANGELOG.md) or above **Changelog** tab.
+Detailed Release Notes are available [here](https://github.com/phoihos/vscode-translate-it/blob/master/CHANGELOG.md) or above **Changelog** tab.
