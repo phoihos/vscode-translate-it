@@ -19,7 +19,7 @@ This extension is a text/comment translator powered by **Google Translate**.
 
 ## Installation
 
-To install this extension go to `View->Extensions` and search for `Translate it`. Next click Install.
+To install this extension go to `View->Extensions` and search for `translate-it`. Next click Install.
 
 ## Usage
 
