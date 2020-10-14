@@ -12,7 +12,7 @@ type TaskHandler = (progress: ITaskProgress) => Thenable<void>;
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	const decoType = vscode.window.createTextEditorDecorationType({
-		backgroundColor: new vscode.ThemeColor('editor.wordHighlightStrongBackground'),
+		backgroundColor: new vscode.ThemeColor('editor.hoverHighlightBackground'),
 		rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed
 	});
 
