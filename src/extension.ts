@@ -31,6 +31,8 @@ export function activate(context: vscode.ExtensionContext) {
 		}, async (progress) => {
 			await preTaskHandler?.(progress);
 
+			latestTranslationMap.set(editor, selections);
+
 			const lineTexts: string[] = [];
 			const lineRanges: vscode.Range[] = [];
 
@@ -81,24 +83,26 @@ export function activate(context: vscode.ExtensionContext) {
 
 			outputChannel.appendLine(`${from} → ${to}\n${hr}\n` + translatedText);
 			outputChannel.appendLine('');
-			if (!config.hoverDisplay) outputChannel.show();
+			if (!config.hoverDisplay) {
+				outputChannel.show();
+			}
 
-			vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', true);
+			return vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', true);
 		});
 	}
 
-	const clearCallback = async (editor: vscode.TextEditor) => {
+	const clearCallback = (editor: vscode.TextEditor) => {
 		editor.setDecorations(decoType, []);
 		latestTranslationMap.clear();
 
-		vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', false);
+		return vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', false);
 	}
 
-	const runCallback = async (editor: vscode.TextEditor) => {
+	const runCallback = (editor: vscode.TextEditor) => {
 		const selections = editor.selections;
-		if (selections.length === 1 && selections[0].isEmpty) return clearCallback(editor);
-
-		latestTranslationMap.set(editor, selections);
+		if (selections.length === 1 && selections[0].isEmpty) {
+			return clearCallback(editor);
+		}
 
 		return translate(editor, selections);
 	}
@@ -111,14 +115,11 @@ export function activate(context: vscode.ExtensionContext) {
 		const selections = latestTranslationMap.get(editor);
 		if (!selections) return;
 
-		const preTaskHandler = (progress: ITaskProgress) => {
+		const preTaskHandler = async (progress: ITaskProgress) => {
 			progress.report({ message: `Changing target language to "${pickedLanguage}" ...` });
-			return config.updateTargetLanguage(pickedLanguage);
+			await config.updateTargetLanguage(pickedLanguage);
+			await clearCallback(editor);
 		}
-
-		await clearCallback(editor);
-
-		latestTranslationMap.set(editor, selections);
 
 		return translate(editor, selections, preTaskHandler);
 	}
