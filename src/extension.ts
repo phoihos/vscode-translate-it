@@ -19,7 +19,7 @@ export function activate(context: vscode.ExtensionContext) {
 	const outputChannel = vscode.window.createOutputChannel('Translate it');
 	const config = getConfiguration();
 
-	const latestTranslationMap = new WeakMap<vscode.TextEditor, vscode.Selection[]>();
+	const latestTranslationMap = new Map<vscode.TextEditor, vscode.Selection[]>();
 
 	async function translate(editor: vscode.TextEditor, selections: vscode.Selection[], preTaskHandler?: TaskHandler) {
 		const document = editor.document;
@@ -69,13 +69,12 @@ export function activate(context: vscode.ExtensionContext) {
 					translatedText.replace(/\n/g, '\n\n') : translatedText);
 				hoverMessage.isTrusted = true;
 
-				const decoOptions = parsedRanges.map(e => ({ hoverMessage: hoverMessage, range: e }));
-				editor.setDecorations(decoType, decoOptions);
-
 				const lastPosition = parsedRanges[parsedRanges.length - 1].end;
 				editor.selection = new vscode.Selection(lastPosition, lastPosition);
-
 				editor.revealRange(parsedRanges[0]);
+
+				const decoOptions = parsedRanges.map(e => ({ hoverMessage: hoverMessage, range: e }));
+				editor.setDecorations(decoType, decoOptions);
 
 				await vscode.commands.executeCommand('editor.action.showHover');
 			}
@@ -83,20 +82,26 @@ export function activate(context: vscode.ExtensionContext) {
 			outputChannel.appendLine(`${from} → ${to}\n${hr}\n` + translatedText);
 			outputChannel.appendLine('');
 			if (!config.hoverDisplay) outputChannel.show();
+
+			vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', true);
 		});
+	}
+
+	const clearCallback = async (editor: vscode.TextEditor) => {
+		editor.setDecorations(decoType, []);
+		latestTranslationMap.clear();
+
+		vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', false);
 	}
 
 	const runCallback = async (editor: vscode.TextEditor) => {
 		const selections = editor.selections;
+		if (selections.length === 1 && selections[0].isEmpty) return clearCallback(editor);
+
 		latestTranslationMap.set(editor, selections);
 
-		if (selections.length === 1 && selections[0].isEmpty)
-			return editor.setDecorations(decoType, []);
-
-		return translate(editor, editor.selections);
+		return translate(editor, selections);
 	}
-
-	context.subscriptions.push(vscode.commands.registerTextEditorCommand('translateIt.run', runCallback));
 
 	const changeTargetLanguageCallback = async (editor: vscode.TextEditor) => {
 		const quickPickOptions = { placeHolder: "Select Target Language" };
@@ -111,10 +116,26 @@ export function activate(context: vscode.ExtensionContext) {
 			return config.updateTargetLanguage(pickedLanguage);
 		}
 
+		await clearCallback(editor);
+
+		latestTranslationMap.set(editor, selections);
+
 		return translate(editor, selections, preTaskHandler);
 	}
 
+	const removeTranslationHighlightingListener = (_editor: vscode.TextEditor | undefined) => {
+		if (latestTranslationMap.size === 0) return;
+
+		latestTranslationMap.forEach((_v, k) => k.setDecorations(decoType, []));
+		latestTranslationMap.clear();
+
+		vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', false);
+	}
+
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('translateIt.run', runCallback));
+	context.subscriptions.push(vscode.commands.registerTextEditorCommand('translateIt.clear', clearCallback));
 	context.subscriptions.push(vscode.commands.registerTextEditorCommand('translateIt.changeTargetLanguage', changeTargetLanguageCallback));
+	context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(removeTranslationHighlightingListener));
 }
 
 // this method is called when your extension is deactivated

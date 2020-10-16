@@ -13,7 +13,7 @@
 	},
 	"homepage": "https://github.com/phoihos/vscode-translate-it/blob/master/README.md",
 	"license": "MIT",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"engines": {
 		"vscode": "^1.49.0"
 	},
@@ -36,13 +36,33 @@
 			{
 				"command": "translateIt.run",
 				"title": "Translate it"
+			},
+			{
+				"command": "translateIt.clear",
+				"title": "Remove Translation Highlighting",
+				"category": "Translate it"
 			}
 		],
 		"menus": {
+			"commandPalette": [
+				{
+					"command": "translateIt.run",
+					"when": "editorHasSelection"
+				},
+				{
+					"command": "translateIt.clear",
+					"when": "!editorHasSelection && editorHasTranslationHighlighting"
+				}
+			],
 			"editor/context": [
 				{
 					"command": "translateIt.run",
 					"when": "editorHasSelection",
+					"group": "1_modification"
+				},
+				{
+					"command": "translateIt.clear",
+					"when": "!editorHasSelection && editorHasTranslationHighlighting",
 					"group": "1_modification"
 				}
 			]
@@ -50,6 +70,12 @@
 		"keybindings": [
 			{
 				"command": "translateIt.run",
+				"when": "editorHasSelection",
+				"key": "shift+alt+t"
+			},
+			{
+				"command": "translateIt.clear",
+				"when": "!editorHasSelection && editorHasTranslationHighlighting",
 				"key": "shift+alt+t"
 			}
 		],
