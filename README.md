@@ -19,14 +19,12 @@ This extension is a text/comment translator powered by **Google Translate**.
 
 ## Installation
 
-To install this extension go to `View->Extensions` and search for `translate-it`. Next click Install.
+To install this extension go to `View->Extensions` and search for `translate-it` (or `Translate it`). Next click Install.
 
 ## Usage
 
 To use the extension go to the Command Palette (`Cmd+Shift+P` on macOS or `Ctrl+Shift+P` on Windows) and launch `Translate it` command.
-> Recommends to use keyboard shortcut `Shift+Alt+T`
-
-And you can remove translation highlighting, if you execute `Translate it` command again with empty selection.
+> Recommends to use keyboard shortcut `Shift+Alt+T`.
 
 ![Demo 1](./images/readme/demo1.gif)
 
@@ -35,11 +33,18 @@ Or select `Translate it` from context menu (`Right-click` on editor).
 
 ![Demo 2](./images/readme/demo2.png)
 
+And you can remove translation highlighting, if you select `Remove Translation Highlighting` from context menu (`Right-click` on editor).
+> or Launch `Translate it: Remove Translation Highlighting` command on the Command Palette. 
+
+> Recommends to use keyboard shortcut `Shift+Alt+T`.
+
+![Demo 3](./images/readme/demo3.png)
+
 ## History Logging
 
 You can find the histories of translation in the **Output Channel**.
 
-![Demo 3](./images/readme/demo3.png)
+![Demo 4](./images/readme/demo4.png)
 
 ## Settings
 
