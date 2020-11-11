@@ -13,7 +13,7 @@
 	},
 	"homepage": "https://github.com/phoihos/vscode-translate-it/blob/master/README.md",
 	"license": "MIT",
-	"version": "1.5.0",
+	"version": "1.5.1",
 	"engines": {
 		"vscode": "^1.49.0"
 	},
