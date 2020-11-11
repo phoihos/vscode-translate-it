@@ -2,6 +2,10 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
+## [1.6.0] - 2020-11-11
+
+- Updated : Changed internal Google Translate API calling
+
 ## [1.5.1] - 2020-11-11
 
 - Fixed : `403 Forbidden` issue

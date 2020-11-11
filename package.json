@@ -13,7 +13,7 @@
 	},
 	"homepage": "https://github.com/phoihos/vscode-translate-it/blob/master/README.md",
 	"license": "MIT",
-	"version": "1.5.1",
+	"version": "1.6.0",
 	"engines": {
 		"vscode": "^1.49.0"
 	},
@@ -239,7 +239,8 @@
 		"vscode-test": "^1.4.0"
 	},
 	"dependencies": {
+		"@vitalets/google-translate-token": "^1.2.0",
 		"common-comment-parser": "^0.2.1",
-		"google-translate-open-api": "^1.3.5"
+		"typed-rest-client": "^1.8.0"
 	}
 }

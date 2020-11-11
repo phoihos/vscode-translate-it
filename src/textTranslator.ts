@@ -1,23 +1,18 @@
-import translate, { Options as IOptions } from 'google-translate-open-api';
+//import translate, { Options as IOptions } from 'google-translate-open-api';
 import { getLocale, getDisplayLanguage } from './constants/locale';
-
-interface ITranslation {
-    translatedText: string;
-    sourceLanguage: string;
-    targetLanguage: string;
-}
+import { translate, ITranslation, IOption } from './googleTranslate';
 
 export default async function translateText(text: string, targetLanguage: string): Promise<Readonly<ITranslation>> {
-    const options: IOptions = { tld: 'com', from: getLocale('Automatic'), to: getLocale(targetLanguage) }
-    const translatedText = await translate(text, options);
+    const option: IOption = { text, from: getLocale('Automatic'), to: getLocale(targetLanguage) }
+    const translation = await translate(option);
 
-    const fromTo = `${getDisplayLanguage(translatedText.data[1])} → ${targetLanguage}`;
-    const translatedFromTo = await translate(fromTo, options);
-    const languages = translatedFromTo.data[0].split('→').map((s: string) => s.trim());
+    const fromTo = `${getDisplayLanguage(translation.from)} → ${targetLanguage}`;
+    const translatedFromTo = await translate({ ...option, text: fromTo });
+    const languages = translatedFromTo.text.split('→').map((s: string) => s.trim());
 
     return {
-        translatedText: translatedText.data[0],
-        sourceLanguage: languages[0],
-        targetLanguage: languages[1]
+        text: translation.text,
+        from: languages[0],
+        to: languages[1]
     };
 }

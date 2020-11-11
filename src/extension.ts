@@ -57,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 			progress.report({ message: `Translating to "${targetLanguage}" ...` });
 
-			const { translatedText, sourceLanguage: from, targetLanguage: to } =
+			const { text: translatedText, from, to } =
 				await translateText(parsedText, targetLanguage);
 
 			const command = 'command:translateIt.changeTargetLanguage';
