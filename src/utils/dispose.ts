@@ -42,7 +42,7 @@ export abstract class Disposable implements IDisposable {
 		this._store.dispose();
 	}
 
-	protected _register<T extends IDisposable>(disposables: T | T[]): void {
+	protected register<T extends IDisposable>(disposables: T | T[]): void {
 		disposables = (disposables instanceof Array) ? disposables : [disposables];
 
 		for (const v of disposables) {

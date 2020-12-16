@@ -11,7 +11,7 @@ export class RemoveTranslationHighlightingListener extends Disposable {
 
         let subscriptions: vscode.Disposable[] = [];
         vscode.window.onDidChangeActiveTextEditor(this.onDidChangeActiveTextEditor, this, subscriptions);
-        this._register(subscriptions);
+        this.register(subscriptions);
     }
 
     private onDidChangeActiveTextEditor(_editor?: vscode.TextEditor) {
