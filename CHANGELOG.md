@@ -2,6 +2,11 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
+## [1.X.0] - 202X-XX-XX
+
+- Refactored : Changed all command functions to command classes
+- Refactored : Changed all event listener functions to event listener classes
+
 ## [1.6.0] - 2020-11-11
 
 - Updated : Changed internal Google Translate API calling

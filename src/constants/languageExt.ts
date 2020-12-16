@@ -48,6 +48,6 @@ const langExtTable: ILangExtItem = {
     yaml: 'yaml'
 };
 
-export default function getLanguageExt(languageId: string) {
+export default function getLanguageExt(languageId: string): string {
     return langExtTable[languageId] ?? 'js';
 }

@@ -115,17 +115,17 @@ const localeTable: ILocaleItem = {
     Zulu: 'zu'
 };
 
-export function getLocale(displayLanguage: string) {
+export function getLocale(displayLanguage: string): string {
     return localeTable[displayLanguage] ?? 'zz';
 }
 
-export function getDisplayLanguage(locale: string) {
+export function getDisplayLanguage(locale: string): string {
     const codes = locale.split('-');
     const locales = codes.length > 1 ? [locale, codes[0]] : [locale];
 
     return Object.keys(localeTable).find(key => locales.includes(localeTable[key])) ?? 'Unknown';
 }
 
-export function getSupportedLanguages() {
+export function getSupportedLanguages(): string[] {
     return Object.keys(localeTable);
 }

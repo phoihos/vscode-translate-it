@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { getDisplayLanguage, getSupportedLanguages } from './constants/locale'
 
-interface IConfiguration {
+export interface IConfiguration {
     hoverDisplay: boolean;
     hoverDisplayHeader: boolean;
     hoverMultiLineFormatting: boolean;
@@ -12,14 +12,14 @@ interface IConfiguration {
 }
 
 class Configuration implements Partial<IConfiguration> {
-    get targetLanguage() {
+    get targetLanguage(): string {
         const language = vscode.workspace.getConfiguration('translateIt').get<string>('targetLanguage');
         return (language && language !== 'Automatic') ? language : getDisplayLanguage(vscode.env.language);
     }
 
     supportedLanguages = getSupportedLanguages();
 
-    public updateTargetLanguage(language: string) {
+    public updateTargetLanguage(language: string): Thenable<void> {
         const config = vscode.workspace.getConfiguration('translateIt');
         return config.update('targetLanguage', language, vscode.ConfigurationTarget.Global);
     }
