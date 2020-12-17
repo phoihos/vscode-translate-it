@@ -1,4 +1,4 @@
-import * as vsceutil from './index.named';
+import * as vscodeUtil from './index.named';
 export * from './index.named';
 
-export default vsceutil;
+export default vscodeUtil;
