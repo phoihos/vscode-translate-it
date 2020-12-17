@@ -1,4 +1,4 @@
-import { ICommand } from '../commandManager';
+import { ICommand } from '../vscode-util';
 import { RunTranslateItCommand } from './runTranslateIt'
 import { ClearTranslateItCommand } from './clearTranslateIt'
 

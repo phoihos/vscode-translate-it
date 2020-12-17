@@ -3,10 +3,8 @@
 import * as vscode from 'vscode';
 import getConfiguration from './configuration'
 
-import CommandManager from './commandManager'
+import { CommandManager, DisposableStore } from './vscode-util'
 import commands from './commands';
-
-import { DisposableStore } from './utils/dispose'
 import events from './events'
 
 // this method is called when your extension is activated

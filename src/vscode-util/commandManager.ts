@@ -1,4 +1,4 @@
-import { DisposableStore } from './utils/dispose'
+import { DisposableStore } from './dispose'
 
 import * as vscode from 'vscode';
 
@@ -7,7 +7,7 @@ export interface ICommand {
 	execute(...args: any[]): void;
 }
 
-export default class CommandManager extends DisposableStore {
+export class CommandManager extends DisposableStore {
 	private readonly _commandIds = new Set<string>();
 
 	public dispose() {

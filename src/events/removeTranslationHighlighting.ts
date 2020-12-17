@@ -1,4 +1,4 @@
-import { Disposable } from '../utils/dispose';
+import { Disposable } from '../vscode-util';
 
 import * as vscode from 'vscode';
 
