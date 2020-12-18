@@ -45,13 +45,13 @@ function registerEvents(
 	decorationType: vscode.TextEditorDecorationType,
 	latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>
 ): vscode.Disposable {
-	const eventListenerList = new vscodeUtil.EventListenerList();
+	const aggregateEventListener = new vscodeUtil.AggregateEventListener();
 
-	eventListenerList.add(
+	aggregateEventListener.add(
 		new events.RemoveTranslationHighlightingListener(decorationType, latestTranslationMap)
 	);
 
-	return eventListenerList;
+	return aggregateEventListener;
 }
 
 // this method is called when your extension is deactivated
