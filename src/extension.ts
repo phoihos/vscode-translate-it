@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import getConfiguration from './configuration'
 
-import { CommandManager, EventListenerList } from './vscode-util'
+import vscodeUtil from './vscode-util'
 import commands from './commands';
 import events from './events'
 
@@ -26,7 +26,7 @@ function registerCommands(
 ): vscode.Disposable {
 	const config = getConfiguration();
 
-	const commandManager = new CommandManager();
+	const commandManager = new vscodeUtil.CommandManager();
 
 	const clearCommand = commandManager.register(
 		new commands.ClearTranslateItCommand(decorationType, latestTranslationMap)
@@ -45,7 +45,7 @@ function registerEvents(
 	decorationType: vscode.TextEditorDecorationType,
 	latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>
 ): vscode.Disposable {
-	const eventListenerList = new EventListenerList();
+	const eventListenerList = new vscodeUtil.EventListenerList();
 
 	eventListenerList.add(
 		new events.RemoveTranslationHighlightingListener(decorationType, latestTranslationMap)
