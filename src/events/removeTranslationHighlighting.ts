@@ -1,8 +1,8 @@
-import { Disposable } from '../vscode-util';
+import { EventListenerBase } from '../vscode-util';
 
 import * as vscode from 'vscode';
 
-export class RemoveTranslationHighlightingListener extends Disposable {
+export class RemoveTranslationHighlightingListener extends EventListenerBase {
     public constructor(
         private readonly _decorationType: vscode.TextEditorDecorationType,
         private readonly _latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>

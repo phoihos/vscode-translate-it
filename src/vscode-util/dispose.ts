@@ -2,13 +2,13 @@ export interface IDisposable {
 	dispose(): void;
 }
 
-export class DisposableStore implements IDisposable {
+export class DisposableStore<T extends IDisposable> implements IDisposable {
 	private _toDispose = new Set<IDisposable>();
 	private _isDisposed = false;
 
-	public add(disposable: IDisposable): IDisposable {
+	public add(disposable: T): T {
 		if (!disposable) return disposable;
-		if ((disposable as unknown as DisposableStore) === this) {
+		if ((disposable as unknown as DisposableStore<T>) === this) {
 			throw new Error('Cannot register a disposable on itself!');
 		}
 

@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import getConfiguration from './configuration'
 
-import { CommandManager, DisposableStore } from './vscode-util'
+import { CommandManager, EventListenerList } from './vscode-util'
 import commands from './commands';
 import events from './events'
 
@@ -45,13 +45,13 @@ function registerEvents(
 	decorationType: vscode.TextEditorDecorationType,
 	latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>
 ): vscode.Disposable {
-	const eventStore = new DisposableStore();
+	const eventListenerList = new EventListenerList();
 
-	eventStore.add(
+	eventListenerList.add(
 		new events.RemoveTranslationHighlightingListener(decorationType, latestTranslationMap)
 	);
 
-	return eventStore;
+	return eventListenerList;
 }
 
 // this method is called when your extension is deactivated
