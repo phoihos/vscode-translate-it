@@ -16,11 +16,11 @@ export class CommandManager extends DisposableStore<IDisposable> {
 	}
 
 	public register<T extends ICommand>(command: T): T {
-		this.registerCommand(command.id, command.execute, command);
+		this._registerCommand(command.id, command.execute, command);
 		return command;
 	}
 
-	private registerCommand(id: string, handler: (...args: any[]) => void, thisArg?: any): void {
+	private _registerCommand(id: string, handler: (...args: any[]) => void, thisArg?: any): void {
 		if (this._commandIds.has(id)) return;
 
 		this.add(vscode.commands.registerCommand(id, handler, thisArg));

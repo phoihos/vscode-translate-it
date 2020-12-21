@@ -28,10 +28,10 @@ export class RunTranslateItCommand implements ICommand {
     ) { }
 
     public async execute(translationOption?: ITranslationOption): Promise<void> {
-        return translationOption ? this.translate(translationOption) : this.translateActiveEditor();
+        return translationOption ? this._translate(translationOption) : this._translateActiveEditor();
     }
 
-    private async translateActiveEditor(): Promise<void> {
+    private async _translateActiveEditor(): Promise<void> {
         const { activeTextEditor } = vscode.window;
         if (!activeTextEditor) return;
 
@@ -40,10 +40,10 @@ export class RunTranslateItCommand implements ICommand {
             return this._clearCommand.execute();
         }
 
-        return this.translate({ editor: activeTextEditor, selections });
+        return this._translate({ editor: activeTextEditor, selections });
     }
 
-    private async translate(translationOption: ITranslationOption): Promise<void> {
+    private async _translate(translationOption: ITranslationOption): Promise<void> {
         const { editor, selections, preTaskHandler } = translationOption;
 
         const document = editor.document;

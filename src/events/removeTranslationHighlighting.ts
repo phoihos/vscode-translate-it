@@ -10,11 +10,11 @@ export class RemoveTranslationHighlightingListener extends EventListenerBase {
         super();
 
         let subscriptions: vscode.Disposable[] = [];
-        vscode.window.onDidChangeActiveTextEditor(this.onDidChangeActiveTextEditor, this, subscriptions);
+        vscode.window.onDidChangeActiveTextEditor(this._onDidChangeActiveTextEditor, this, subscriptions);
         this.register(subscriptions);
     }
 
-    private onDidChangeActiveTextEditor(_editor?: vscode.TextEditor) {
+    private _onDidChangeActiveTextEditor(_editor?: vscode.TextEditor) {
         if (this._latestTranslationMap.size === 0) return;
 
         this._latestTranslationMap.forEach((_v, k) => k.setDecorations(this._decorationType, []));
