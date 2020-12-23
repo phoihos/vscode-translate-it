@@ -2,7 +2,7 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
-## [1.X.0] - 202X-XX-XX
+## [1.7.0] - 2020-12-23
 
 - Refactored : Changed all command functions to command classes
 - Refactored : Changed all event listener functions to event listener classes
