@@ -1,5 +1,4 @@
 import { ICommand } from '../vscode-util';
-import { ClearTranslateItCommand } from './clearTranslateIt'
 
 import parseText from '../textParser';
 import translateText from '../textTranslator'
@@ -21,7 +20,7 @@ export class RunTranslateItCommand implements ICommand {
     private readonly _outputChannel = vscode.window.createOutputChannel('Translate it');
 
     public constructor(
-        private readonly _clearCommand: ClearTranslateItCommand,
+        private readonly _clearCommand: ICommand,
         private readonly _decorationType: vscode.TextEditorDecorationType,
         private readonly _latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>,
         private readonly _config: Readonly<IConfiguration>

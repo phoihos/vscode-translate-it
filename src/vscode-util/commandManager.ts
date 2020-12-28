@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 
 export interface ICommand {
 	readonly id: string;
-	execute(...args: any[]): void;
+	execute(...args: any[]): any;
 }
 
 export class CommandManager extends DisposableStore<IDisposable> {
@@ -20,7 +20,7 @@ export class CommandManager extends DisposableStore<IDisposable> {
 		return command;
 	}
 
-	private _registerCommand(id: string, handler: (...args: any[]) => void, thisArg?: any): void {
+	private _registerCommand(id: string, handler: (...args: any[]) => any, thisArg?: any): void {
 		if (this._commandIds.has(id)) return;
 
 		this.add(vscode.commands.registerCommand(id, handler, thisArg));

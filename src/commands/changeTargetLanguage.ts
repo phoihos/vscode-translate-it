@@ -1,6 +1,4 @@
 import { ICommand } from '../vscode-util';
-import { RunTranslateItCommand } from './runTranslateIt'
-import { ClearTranslateItCommand } from './clearTranslateIt'
 
 import { IConfiguration } from '../configuration'
 
@@ -10,8 +8,8 @@ export class ChangeTargetLanguageCommand implements ICommand {
 	public readonly id = 'translateIt.changeTargetLanguage';
 
 	public constructor(
-		private readonly _runCommand: RunTranslateItCommand,
-		private readonly _clearCommand: ClearTranslateItCommand,
+		private readonly _runCommand: ICommand,
+		private readonly _clearCommand: ICommand,
 		private readonly _latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>,
 		private readonly _config: Readonly<IConfiguration>
 	) { }
