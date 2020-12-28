@@ -8,7 +8,7 @@ export interface IConfiguration {
     targetLanguage: string;
     supportedLanguages: string[];
 
-    updateTargetLanguage: (language: string) => PromiseLike<void>;
+    updateTargetLanguage: (language: string) => Thenable<void>;
 }
 
 class Configuration implements Partial<IConfiguration> {
