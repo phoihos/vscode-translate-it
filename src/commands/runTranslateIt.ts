@@ -26,7 +26,7 @@ export class RunTranslateItCommand implements ICommand {
         private readonly _config: Readonly<IConfiguration>
     ) { }
 
-    public async execute(translationOption?: ITranslationOption): Promise<void> {
+    public execute(translationOption?: ITranslationOption): Promise<void> {
         return translationOption ? this._translate(translationOption) : this._translateActiveEditor();
     }
 
