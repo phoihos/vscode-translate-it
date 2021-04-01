@@ -2,6 +2,11 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
+## [1.7.1] - 2021-04-01
+
+- Updated : Internal dependencies
+- Fixed : Security update (update some packages)
+
 ## [1.7.0] - 2020-12-23
 
 - Refactored : Changed all command functions to command classes
