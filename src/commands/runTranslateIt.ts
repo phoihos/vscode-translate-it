@@ -1,4 +1,4 @@
-import { ICommand } from '../vscode-util';
+import { ICommand } from '@phoihos/vsce-util';
 
 import parseText from '../textParser';
 import translateText from '../textTranslator'

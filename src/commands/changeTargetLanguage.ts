@@ -1,5 +1,4 @@
-import { ICommand } from '../vscode-util';
-
+import { ICommand } from '@phoihos/vsce-util';
 import { IConfiguration } from '../configuration'
 
 import * as vscode from 'vscode';

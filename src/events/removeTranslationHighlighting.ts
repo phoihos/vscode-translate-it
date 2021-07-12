@@ -1,6 +1,5 @@
-import { EventListenerBase } from '../vscode-util';
-
 import * as vscode from 'vscode';
+import { EventListenerBase } from '@phoihos/vsce-util';
 
 export class RemoveTranslationHighlightingListener extends EventListenerBase {
     public constructor(
