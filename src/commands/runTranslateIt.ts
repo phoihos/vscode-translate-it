@@ -84,7 +84,11 @@ export class RunTranslateItCommand implements ICommand {
 
             const { text: translatedText, from, to } = await translateText(parsedTexts.join('\n'), targetLanguage);
 
-            const horizontalRule = '-'.repeat(from.length + to.length + 3);
+            // see: https://jrgraphix.net/r/Unicode/
+            const regexCJK = /[\u3000-\u9fff\uac00-\ud7af\uff01-\uff60]/g;
+            // CJK characters take up 2 width
+            const headerWidth = [from, to].reduce((a, c) => a + c.length + (c.match(regexCJK)?.length ?? 0), 3);
+            const horizontalRule = '-'.repeat(headerWidth);
 
             if (this._config.hoverDisplay) {
                 const commandLink = 'command:translateIt.changeTargetLanguage';
