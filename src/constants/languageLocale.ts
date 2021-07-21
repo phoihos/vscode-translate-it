@@ -1,8 +1,8 @@
-interface ILocaleItem {
+interface ILanguageLocalTable {
     [key: string]: string
 }
 
-const localeTable: ILocaleItem = {
+const _languageLocalTable: ILanguageLocalTable = {
     Automatic: 'auto',
     Afrikaans: 'af',
     Albanian: 'sq',
@@ -115,17 +115,19 @@ const localeTable: ILocaleItem = {
     Zulu: 'zu'
 };
 
-export function getLocale(displayLanguage: string): string {
-    return localeTable[displayLanguage] ?? 'zz';
+const _languageNames = Object.keys(_languageLocalTable);
+
+export function getLocale(languageName: string): string {
+    return _languageLocalTable[languageName] ?? 'zz';
 }
 
-export function getDisplayLanguage(locale: string): string {
+export function getLanguageName(locale: string): string {
     const codes = locale.split('-');
     const locales = codes.length > 1 ? [locale, codes[0]] : [locale];
 
-    return Object.keys(localeTable).find(key => locales.includes(localeTable[key])) ?? 'Unknown';
+    return _languageNames.find(key => locales.includes(_languageLocalTable[key])) ?? 'Unknown';
 }
 
-export function getSupportedLanguages(): string[] {
-    return Object.keys(localeTable);
+export function getAllLanguageNames(): string[] {
+    return _languageNames;
 }

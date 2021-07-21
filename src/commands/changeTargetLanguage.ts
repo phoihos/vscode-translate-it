@@ -1,4 +1,5 @@
 import { ICommand } from '@phoihos/vsce-util';
+
 import { IConfiguration } from '../configuration'
 
 import * as vscode from 'vscode';
@@ -14,15 +15,15 @@ export class ChangeTargetLanguageCommand implements ICommand {
 	) { }
 
 	public async execute(): Promise<void> {
-		const { activeTextEditor } = vscode.window;
-		if (!activeTextEditor) return;
+		const editor = vscode.window.activeTextEditor;
+		if (editor === undefined) return;
 
 		const quickPickOptions = { placeHolder: "Select Target Language" };
 		const pickedLanguage = await vscode.window.showQuickPick(this._config.supportedLanguages, quickPickOptions);
-		if (!pickedLanguage || pickedLanguage === this._config.targetLanguage) return;
+		if (pickedLanguage === undefined || pickedLanguage === this._config.targetLanguage) return;
 
-		const selections = this._latestTranslationMap.get(activeTextEditor);
-		if (!selections) return;
+		const selections = this._latestTranslationMap.get(editor);
+		if (selections === undefined) return;
 
 		const preTaskHandler = async (progress: vscode.Progress<{ message?: string; increment?: number }>) => {
 			progress.report({ message: `Changing target language to "${pickedLanguage}" ...` });
@@ -30,6 +31,6 @@ export class ChangeTargetLanguageCommand implements ICommand {
 			await this._clearCommand.execute();
 		}
 
-		return this._runCommand.execute({ editor: activeTextEditor, selections, preTaskHandler });
+		return this._runCommand.execute({ editor, selections, preTaskHandler });
 	}
 }

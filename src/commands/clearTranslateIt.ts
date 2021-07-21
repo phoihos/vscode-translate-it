@@ -11,10 +11,10 @@ export class ClearTranslateItCommand implements ICommand {
 	) { }
 
 	public async execute(): Promise<void> {
-		const { activeTextEditor } = vscode.window;
-		if (!activeTextEditor) return;
+		const editor = vscode.window.activeTextEditor;
+		if (editor === undefined) return;
 
-		activeTextEditor.setDecorations(this._decorationType, []);
+		editor.setDecorations(this._decorationType, []);
 		this._latestTranslationMap.clear();
 
 		return vscode.commands.executeCommand('setContext', 'editorHasTranslationHighlighting', false);

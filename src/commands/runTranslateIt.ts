@@ -1,12 +1,12 @@
 import { ICommand } from '@phoihos/vsce-util';
 
-import parseText from '../textParser';
-import translateText from '../textTranslator'
+import { parseTexts } from '../textParser';
+import { translateText } from '../textTranslator'
 import { IConfiguration } from '../configuration'
 
 import * as vscode from 'vscode';
 
-interface ITranslationOption {
+export interface ITranslationOption {
     editor: vscode.TextEditor;
     selections: vscode.Selection[];
     preTaskHandler?: (
@@ -26,32 +26,32 @@ export class RunTranslateItCommand implements ICommand {
         private readonly _config: Readonly<IConfiguration>
     ) { }
 
-    public execute(translationOption?: ITranslationOption): Promise<void> {
-        return translationOption ? this._translate(translationOption) : this._translateActiveEditor();
+    public execute(option?: ITranslationOption): Promise<void> {
+        return option ? this._translate(option) : this._translateActiveEditor();
     }
 
     private async _translateActiveEditor(): Promise<void> {
-        const { activeTextEditor } = vscode.window;
-        if (!activeTextEditor) return;
+        const editor = vscode.window.activeTextEditor;
+        if (editor === undefined) return;
 
-        const selections = activeTextEditor.selections;
+        const selections = editor.selections;
         if (selections.length === 1 && selections[0].isEmpty) {
             return this._clearCommand.execute();
         }
 
-        return this._translate({ editor: activeTextEditor, selections });
+        return this._translate({ editor, selections });
     }
 
-    private async _translate(translationOption: ITranslationOption): Promise<void> {
-        const { editor, selections, preTaskHandler } = translationOption;
+    private async _translate(option: ITranslationOption): Promise<void> {
+        const { editor, selections, preTaskHandler } = option;
 
         const document = editor.document;
         const languageId = document.languageId;
-        const eol = (document.eol === vscode.EndOfLine.LF) ? '\n' : '\r\n';
 
         await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification
         }, async (progress) => {
+            // Run pre task before to translate
             await preTaskHandler?.(progress);
 
             this._latestTranslationMap.set(editor, selections);
@@ -75,21 +75,23 @@ export class RunTranslateItCommand implements ICommand {
                 } while (line++ < selection.end.line);
             }
 
-            const { parsedText, parsedRanges } = parseText(lineTexts, eol, lineRanges, languageId);
             const targetLanguage = this._config.targetLanguage;
 
             progress.report({ message: `Translating to "${targetLanguage}" ...` });
 
-            const { text: translatedText, from, to } =
-                await translateText(parsedText, targetLanguage);
+            const { texts: parsedTexts, lines: parsedLines } = parseTexts(lineTexts, languageId);
+            const parsedRanges = lineRanges.filter((_, i) => parsedLines.includes(i));
 
-            const command = 'command:translateIt.changeTargetLanguage';
-            const hr = '-'.repeat(from.length + to.length + 3);
+            const { text: translatedText, from, to } = await translateText(parsedTexts.join('\n'), targetLanguage);
+
+            const horizontalRule = '-'.repeat(from.length + to.length + 3);
 
             if (this._config.hoverDisplay) {
+                const commandLink = 'command:translateIt.changeTargetLanguage';
+
                 const hoverMessage = new vscode.MarkdownString();
                 hoverMessage.appendMarkdown(this._config.hoverDisplayHeader ?
-                    `${from} → [${to}](${command})\n\n${hr}\n\n` : '');
+                    `${from} → [${to}](${commandLink})\n\n${horizontalRule}\n\n` : '');
                 hoverMessage.appendMarkdown(this._config.hoverMultiLineFormatting ?
                     translatedText.replace(/\n/g, '\n\n') : translatedText);
                 hoverMessage.isTrusted = true;
@@ -98,15 +100,15 @@ export class RunTranslateItCommand implements ICommand {
                 editor.selection = new vscode.Selection(lastPosition, lastPosition);
                 editor.revealRange(parsedRanges[0]);
 
-                const decoOptions = parsedRanges.map(e => ({ hoverMessage: hoverMessage, range: e }));
-                editor.setDecorations(this._decorationType, decoOptions);
+                const decorationOptions = parsedRanges.map((range) => ({ hoverMessage, range }));
+                editor.setDecorations(this._decorationType, decorationOptions);
 
                 await vscode.commands.executeCommand('editor.action.showHover');
             }
 
-            this._outputChannel.appendLine(`${from} → ${to}\n${hr}\n` + translatedText);
+            this._outputChannel.appendLine(`${from} → ${to}\n${horizontalRule}\n` + translatedText);
             this._outputChannel.appendLine('');
-            if (!this._config.hoverDisplay) {
+            if (this._config.hoverDisplay === false) {
                 this._outputChannel.show();
             }
 

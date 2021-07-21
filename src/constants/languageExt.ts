@@ -1,8 +1,8 @@
-interface ILangExtItem {
+interface ILanguageExtTable {
     [key: string]: string
 }
 
-const langExtTable: ILangExtItem = {
+const _languageExtTable: ILanguageExtTable = {
     bat: 'bat',
     c: 'cpp',
     clojure: 'clj',
@@ -48,6 +48,6 @@ const langExtTable: ILangExtItem = {
     yaml: 'yaml'
 };
 
-export default function getLanguageExt(languageId: string): string {
-    return langExtTable[languageId] ?? 'js';
+export function getLanguageExt(languageId: string): string {
+    return _languageExtTable[languageId] ?? 'js';
 }
