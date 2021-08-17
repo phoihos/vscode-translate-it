@@ -34,7 +34,7 @@ Or select `Translate it` from context menu (`Right-click` on editor).
 ![Demo 2](./images/readme/demo2.png)
 
 And you can remove translation highlighting, if you select `Remove Translation Highlighting` from context menu (`Right-click` on editor).
-> or Launch `Translate it: Remove Translation Highlighting` command on the Command Palette. 
+> or Launch `Translate it: Remove Translation Highlighting` command on the Command Palette.  
 
 > Recommends to use keyboard shortcut `Shift+Alt+T`.
 
@@ -64,3 +64,7 @@ If you find any problems using this extension or you want to propose new feature
 ## Release Notes
 
 Detailed Release Notes are available [here](https://github.com/phoihos/vscode-translate-it/blob/master/CHANGELOG.md) or above **Changelog** tab.
+
+## Attributions
+
+Icon made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
