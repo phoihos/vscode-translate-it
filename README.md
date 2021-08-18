@@ -52,9 +52,9 @@ Table of contributed settings (prefix "translateIt."):
 
 | Name                     | Default       | Description                                                                                            |
 | ------------------------ | ------------- | ------------------------------------------------------------------------------------------------------ |
-| hoverDisplay             | `true`        | Display translated result as hover message (if `false`, always open **Output Channel** instead)                                                                   |
-| hoverDisplayHeader       | `true`        | Display hover message with header area : `"Source Language → Target Language"`                                  |
-| hoverMultiLineFormatting | `true`        | Display hover message with Multi-Line Formatting                                                               |
+| hoverDisplay             | `true`        | Display translated result as hover message (if `false`, always open **Output Channel** instead)        |
+| hoverDisplayHeader       | `true`        | Display hover message with header area : `"Source Language → Target Language"`                         |
+| hoverMultiLineFormatting | `true`        | Display hover message with Multi-Line Formatting                                                       |
 | targetLanguage           | `"Automatic"` | Target language ([list the supported](https://cloud.google.com/translate/docs/languages)) translate to |
 
 ## Issues

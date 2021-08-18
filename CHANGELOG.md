@@ -2,6 +2,10 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
+## [1.8.0] - 2021-08-18
+
+- Refactored : Bundle the extension to reduce the size
+
 ## [1.7.4] - 2021-07-21
 
 - Updated : The horizontal rule in the **Output Channel** has correctly width even if the header contains CJK (Chinese/Japanese/Korean) characters

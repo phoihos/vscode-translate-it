@@ -1,6 +1,7 @@
 .vscode/**
 .vscode-test/**
-out/test/**
+out/**
+node_modules/**
 src/**
 images/readme/**
 .gitignore
@@ -8,5 +9,6 @@ images/readme/**
 vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
+**/.prettierrc.json
 **/*.map
 **/*.ts

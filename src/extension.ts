@@ -1,58 +1,59 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import getConfiguration from './configuration'
 
-import vsceUtil from '@phoihos/vsce-util'
+import getConfiguration from './configuration';
+
+import vsceUtil from '@phoihos/vsce-util';
 import commands from './commands';
-import events from './events'
+import events from './events';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	const decorationType = vscode.window.createTextEditorDecorationType({
-		backgroundColor: new vscode.ThemeColor('editor.hoverHighlightBackground'),
-		rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed
-	});
-	const latestTranslationMap = new Map<vscode.TextEditor, vscode.Selection[]>();
+  const decorationType = vscode.window.createTextEditorDecorationType({
+    backgroundColor: new vscode.ThemeColor('editor.hoverHighlightBackground'),
+    rangeBehavior: vscode.DecorationRangeBehavior.ClosedClosed
+  });
+  const latestTranslationMap = new Map<vscode.TextEditor, vscode.Selection[]>();
 
-	context.subscriptions.push(registerCommands(decorationType, latestTranslationMap));
-	context.subscriptions.push(registerEvents(decorationType, latestTranslationMap));
+  context.subscriptions.push(registerCommands(decorationType, latestTranslationMap));
+  context.subscriptions.push(registerEvents(decorationType, latestTranslationMap));
 }
 
 function registerCommands(
-	decorationType: vscode.TextEditorDecorationType,
-	latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>
+  decorationType: vscode.TextEditorDecorationType,
+  latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>
 ): vscode.Disposable {
-	const config = getConfiguration();
+  const config = getConfiguration();
 
-	const commandManager = new vsceUtil.CommandManager();
+  const commandManager = new vsceUtil.CommandManager();
 
-	const clearCommand = commandManager.register(
-		new commands.ClearTranslateItCommand(decorationType, latestTranslationMap)
-	);
-	const runCommand = commandManager.register(
-		new commands.RunTranslateItCommand(clearCommand, decorationType, latestTranslationMap, config)
-	);
-	commandManager.register(
-		new commands.ChangeTargetLanguageCommand(runCommand, clearCommand, latestTranslationMap, config)
-	);
+  const clearCommand = commandManager.register(
+    new commands.ClearTranslateItCommand(decorationType, latestTranslationMap)
+  );
+  const runCommand = commandManager.register(
+    new commands.RunTranslateItCommand(clearCommand, decorationType, latestTranslationMap, config)
+  );
+  commandManager.register(
+    new commands.ChangeTargetLanguageCommand(runCommand, clearCommand, latestTranslationMap, config)
+  );
 
-	return commandManager;
+  return commandManager;
 }
 
 function registerEvents(
-	decorationType: vscode.TextEditorDecorationType,
-	latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>
+  decorationType: vscode.TextEditorDecorationType,
+  latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>
 ): vscode.Disposable {
-	const aggregateEventListener = new vsceUtil.AggregateEventListener();
+  const aggregateEventListener = new vsceUtil.AggregateEventListener();
 
-	aggregateEventListener.add(
-		new events.RemoveTranslationHighlightingListener(decorationType, latestTranslationMap)
-	);
+  aggregateEventListener.add(
+    new events.RemoveTranslationHighlightingListener(decorationType, latestTranslationMap)
+  );
 
-	return aggregateEventListener;
+  return aggregateEventListener;
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() {}
