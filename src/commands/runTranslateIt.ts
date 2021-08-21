@@ -27,7 +27,9 @@ export class RunTranslateItCommand implements ICommand {
   ) {}
 
   public execute(option?: ITranslationOption): Promise<void> {
-    return option ? this._translate(option) : this._translateActiveEditor();
+    return option?.editor !== undefined && option.selections !== undefined
+      ? this._translate(option)
+      : this._translateActiveEditor();
   }
 
   private async _translateActiveEditor(): Promise<void> {

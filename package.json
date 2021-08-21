@@ -13,7 +13,7 @@
   },
   "homepage": "https://github.com/phoihos/vscode-translate-it#readme",
   "license": "MIT",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "engines": {
     "vscode": "^1.49.0"
   },
@@ -75,7 +75,7 @@
       },
       {
         "command": "translateIt.clear",
-        "when": "!editorHasSelection && editorHasTranslationHighlighting",
+        "when": "!editorHasSelection",
         "key": "shift+alt+t"
       }
     ],
