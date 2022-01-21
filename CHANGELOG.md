@@ -2,6 +2,10 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
+## [1.8.2] - 2022-01-21
+
+- Updated : Internal dependencies
+
 ## [1.8.1] - 2021-08-21
 
 - Fixed : `Translate it` command does not work from the context menu
