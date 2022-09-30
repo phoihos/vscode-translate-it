@@ -8,7 +8,7 @@ import { IConfiguration } from '../configuration';
 
 export interface ITranslationOption {
   editor: vscode.TextEditor;
-  selections: vscode.Selection[];
+  selections: readonly vscode.Selection[];
   preTaskHandler?: (
     progress: vscode.Progress<{ message?: string; increment?: number }>
   ) => Thenable<void>;
@@ -22,7 +22,7 @@ export class RunTranslateItCommand implements ICommand {
   public constructor(
     private readonly _clearCommand: ICommand,
     private readonly _decorationType: vscode.TextEditorDecorationType,
-    private readonly _latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>,
+    private readonly _latestTranslationMap: Map<vscode.TextEditor, readonly vscode.Selection[]>,
     private readonly _config: Readonly<IConfiguration>
   ) {}
 
