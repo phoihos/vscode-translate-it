@@ -245,7 +245,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
-    "@phoihos/vsce-util": "https://github.com/phoihos/vsce-util.git#v0.1.0",
+    "@phoihos/vsce-util": "github:phoihos/vsce-util#v0.1.0",
     "@vitalets/google-translate-token": "^1.2.0",
     "common-comment-parser": "^0.2.1",
     "typed-rest-client": "^1.8.9"
