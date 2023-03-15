@@ -1,8 +1,8 @@
-interface ILanguageLocalTable {
+export interface LanguageCodeMap {
   [key: string]: string;
 }
 
-const _languageLocalTable: ILanguageLocalTable = {
+const _languageCodeMap: LanguageCodeMap = {
   Automatic: 'auto',
   Afrikaans: 'af',
   Albanian: 'sq',
@@ -115,17 +115,17 @@ const _languageLocalTable: ILanguageLocalTable = {
   Zulu: 'zu'
 };
 
-const _languageNames = Object.keys(_languageLocalTable);
+const _languageNames = Object.keys(_languageCodeMap);
 
-export function getLocale(languageName: string): string {
-  return _languageLocalTable[languageName] ?? 'zz';
+export function getLanguageCode(languageName: string): string {
+  return _languageCodeMap[languageName] ?? 'zz';
 }
 
-export function getLanguageName(locale: string): string {
-  const codes = locale.split('-');
-  const locales = codes.length > 1 ? [locale, codes[0]] : [locale];
+export function getLanguageName(languageCode: string): string {
+  const codes = languageCode.split('-');
+  const multiCodes = codes.length > 1 ? [languageCode, codes[0]] : [languageCode];
 
-  return _languageNames.find((key) => locales.includes(_languageLocalTable[key])) ?? 'Unknown';
+  return _languageNames.find((key) => multiCodes.includes(_languageCodeMap[key])) ?? 'Unknown';
 }
 
 export function getAllLanguageNames(): string[] {

@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 
-import { ICommand } from '@phoihos/vsce-util';
+import { Command } from '@phoihos/vsce-util';
 
-export class ClearTranslateItCommand implements ICommand {
+export class ClearTranslateItCommand implements Command {
   public readonly id = 'translateIt.clear';
 
   public constructor(

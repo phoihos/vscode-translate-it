@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 
-import { ICommand } from '@phoihos/vsce-util';
+import { Command } from '@phoihos/vsce-util';
 
 import { parseTexts } from '../textParser';
 import { translateText } from '../textTranslator';
-import { IConfiguration } from '../configuration';
+import { Configuration } from '../configuration';
 
-export interface ITranslationOption {
+export interface TranslationOption {
   editor: vscode.TextEditor;
   selections: readonly vscode.Selection[];
   preTaskHandler?: (
@@ -14,19 +14,19 @@ export interface ITranslationOption {
   ) => Thenable<void>;
 }
 
-export class RunTranslateItCommand implements ICommand {
+export class RunTranslateItCommand implements Command {
   public readonly id = 'translateIt.run';
 
   private readonly _outputChannel = vscode.window.createOutputChannel('Translate it');
 
   public constructor(
-    private readonly _clearCommand: ICommand,
+    private readonly _clearCommand: Command,
     private readonly _decorationType: vscode.TextEditorDecorationType,
     private readonly _latestTranslationMap: Map<vscode.TextEditor, readonly vscode.Selection[]>,
-    private readonly _config: Readonly<IConfiguration>
+    private readonly _config: Readonly<Configuration>
   ) {}
 
-  public execute(option?: ITranslationOption): Promise<void> {
+  public execute(option?: TranslationOption): Promise<void> {
     return option?.editor !== undefined && option.selections !== undefined
       ? this._translate(option)
       : this._translateActiveEditor();
@@ -44,7 +44,7 @@ export class RunTranslateItCommand implements ICommand {
     return this._translate({ editor, selections });
   }
 
-  private async _translate(option: ITranslationOption): Promise<void> {
+  private async _translate(option: TranslationOption): Promise<void> {
     const { editor, selections, preTaskHandler } = option;
 
     const document = editor.document;
@@ -82,8 +82,11 @@ export class RunTranslateItCommand implements ICommand {
         }
 
         const targetLanguage = this._config.targetLanguage;
+        const translationApi = this._config.api;
 
-        progress.report({ message: `Translating to "${targetLanguage}" ...` });
+        progress.report({
+          message: `Translating to "${targetLanguage}" (via ${translationApi}) ...`
+        });
 
         const { texts: parsedTexts, lines: parsedLines } = parseTexts(lineTexts, languageId);
         const parsedRanges = lineRanges.filter((_, i) => parsedLines.includes(i));
@@ -91,8 +94,9 @@ export class RunTranslateItCommand implements ICommand {
         const {
           text: translatedText,
           from,
-          to
-        } = await translateText(parsedTexts.join('\n'), targetLanguage);
+          to,
+          api: usedTranslationApi
+        } = await translateText(parsedTexts.join('\n'), targetLanguage, translationApi);
 
         // see: https://jrgraphix.net/r/Unicode/
         const regexCJK = /[\u3000-\u9fff\uac00-\ud7af\uff01-\uff60]/g;
@@ -109,7 +113,7 @@ export class RunTranslateItCommand implements ICommand {
           const hoverMessage = new vscode.MarkdownString();
           hoverMessage.appendMarkdown(
             this._config.hoverDisplayHeader
-              ? `${from} → [${to}](${commandLink})\n\n${horizontalRule}\n\n`
+              ? `${from} → [${to}](${commandLink}) (via ${usedTranslationApi})\n\n${horizontalRule}\n\n`
               : ''
           );
           hoverMessage.appendMarkdown(

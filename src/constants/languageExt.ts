@@ -1,8 +1,8 @@
-interface ILanguageExtTable {
+interface LanguageExtMap {
   [key: string]: string;
 }
 
-const _languageExtTable: ILanguageExtTable = {
+const _languageExtMap: LanguageExtMap = {
   bat: 'bat',
   c: 'cpp',
   clojure: 'clj',
@@ -49,5 +49,5 @@ const _languageExtTable: ILanguageExtTable = {
 };
 
 export function getLanguageExt(languageId: string): string {
-  return _languageExtTable[languageId] ?? 'js';
+  return _languageExtMap[languageId] ?? 'js';
 }

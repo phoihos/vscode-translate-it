@@ -1,18 +1,19 @@
 import * as vscode from 'vscode';
 
-import { getLanguageName, getAllLanguageNames } from './constants/languageLocale';
+import { getLanguageName, getAllLanguageNames } from './constants/languageCode';
 
-export interface IConfiguration {
+export interface Configuration {
   hoverDisplay: boolean;
   hoverDisplayHeader: boolean;
   hoverMultiLineFormatting: boolean;
   targetLanguage: string;
+  api: string;
   supportedLanguages: string[];
 
-  updateTargetLanguage: (language: string) => Thenable<void>;
+  updateTargetLanguage(language: string): Thenable<void>;
 }
 
-class Configuration implements Partial<IConfiguration> {
+class ConfigurationImpl implements Partial<Configuration> {
   get targetLanguage(): string {
     const config = vscode.workspace.getConfiguration('translateIt');
     const languageName = config.get<string>('targetLanguage', 'Automatic');
@@ -29,9 +30,9 @@ class Configuration implements Partial<IConfiguration> {
   }
 }
 
-export default function getConfiguration(): Readonly<IConfiguration> {
-  return new Proxy(new Configuration() as IConfiguration, {
-    get: function (target: IConfiguration, prop: keyof IConfiguration) {
+export default function getConfiguration(): Readonly<Configuration> {
+  return new Proxy(new ConfigurationImpl() as Configuration, {
+    get: function (target: Configuration, prop: keyof Configuration) {
       return target[prop] ?? vscode.workspace.getConfiguration('translateIt').get(prop);
     }
   });

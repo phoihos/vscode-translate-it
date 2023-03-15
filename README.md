@@ -5,17 +5,17 @@ This extension is a text/comment translator powered by **Google Translate**.
 ## Features
 
 - Translate selected texts from `Source Language` to `Target Language`
-    - Automatically detect `Source Language` and `Target Language`
-        - `Automatic Target Language` is your prefer display language of VSCode
-        - You can also change `Target Language` in the **Extension Settings**
+  - Automatically detect `Source Language` and `Target Language`
+    - `Automatic Target Language` is your prefer display language of VSCode
+    - You can also change `Target Language` in the **Extension Settings**
 - Translate only comments when you select comments and codes
-    - Supports more than 30 programming languages
-    - See below a [demo](#usage)
+  - Supports more than 30 programming languages
+  - See below a [demo](#usage)
 - Display translated result as **Hover Message**
-    - Click **Target Language** on header of hover message to change the `Target Language`
-    - See below a [demo](#usage)
+  - Click **Target Language** on header of hover message to change the `Target Language`
+  - See below a [demo](#usage)
 - And history logging in the **Output Channel**
-    - See below a [demo](#history-logging)
+  - See below a [demo](#history-logging)
 
 ## Installation
 
@@ -56,6 +56,7 @@ Table of contributed settings (prefix "translateIt."):
 | hoverDisplayHeader       | `true`        | Display hover message with header area : `"Source Language → Target Language"`                         |
 | hoverMultiLineFormatting | `true`        | Display hover message with Multi-Line Formatting                                                       |
 | targetLanguage           | `"Automatic"` | Target language ([list the supported](https://cloud.google.com/translate/docs/languages)) translate to |
+| api                      | `"Google"`    | Preferred translation api to used                                                                      |
 
 ## Issues
 

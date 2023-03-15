@@ -2,12 +2,12 @@ import parseComments from 'common-comment-parser';
 
 import { getLanguageExt } from './constants/languageExt';
 
-interface IParseResult {
+interface ParseResult {
   texts: string[];
   lines: number[];
 }
 
-export function parseTexts(texts: string[], languageId: string): Readonly<IParseResult> {
+export function parseTexts(texts: string[], languageId: string): Readonly<ParseResult> {
   const parsedResults = parseComments(texts.join('\n'), getLanguageExt(languageId));
 
   const comments: string[] = [];

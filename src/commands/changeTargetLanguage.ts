@@ -1,17 +1,17 @@
 import * as vscode from 'vscode';
 
-import { ICommand } from '@phoihos/vsce-util';
+import { Command } from '@phoihos/vsce-util';
 
-import { IConfiguration } from '../configuration';
+import { Configuration } from '../configuration';
 
-export class ChangeTargetLanguageCommand implements ICommand {
+export class ChangeTargetLanguageCommand implements Command {
   public readonly id = 'translateIt.changeTargetLanguage';
 
   public constructor(
-    private readonly _runCommand: ICommand,
-    private readonly _clearCommand: ICommand,
+    private readonly _runCommand: Command,
+    private readonly _clearCommand: Command,
     private readonly _latestTranslationMap: Map<vscode.TextEditor, vscode.Selection[]>,
-    private readonly _config: Readonly<IConfiguration>
+    private readonly _config: Readonly<Configuration>
   ) {}
 
   public async execute(): Promise<void> {
