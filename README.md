@@ -1,21 +1,23 @@
 # Translate it
 
-This extension is a text/comment translator powered by **Google Translate**.
+This extension is a text/comment translator powered by **Google Translate** (or **Bing Translator**).
 
 ## Features
 
-- Translate selected texts from `Source Language` to `Target Language`
-  - Automatically detect `Source Language` and `Target Language`
+- Translates selected texts from `Source Language` to `Target Language`
+  - Automatically detects `Source Language` and `Target Language`
     - `Automatic Target Language` is your prefer display language of VSCode
-    - You can also change `Target Language` in the **Extension Settings**
-- Translate only comments when you select comments and codes
+    - You can also change the `Target Language` in the **Extension Settings**
+- Translates only comments when you select comments and codes
   - Supports more than 30 programming languages
   - See below a [demo](#usage)
-- Display translated result as **Hover Message**
-  - Click **Target Language** on header of hover message to change the `Target Language`
+- Displays translated result as **Hover Message**
+  - You can change the `Target Language` and re-translate, by click **Target Language** on header of hover message
   - See below a [demo](#usage)
-- And history logging in the **Output Channel**
+- And supports history logging in the **Output Channel**
   - See below a [demo](#history-logging)
+- Now, you can choose your preferred translation API
+  - Currently, `Google` and `Bing` translation APIs are supported
 
 ## Installation
 

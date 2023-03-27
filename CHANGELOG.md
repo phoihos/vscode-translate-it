@@ -2,6 +2,12 @@
 
 All notable changes to the "Translate it" extension will be documented in this file.
 
+## [1.9.0] - 2023-03-27
+
+- Added : New `Bing Translator` feature
+  - Now, supports two translation api `Google` and `Bing`
+  - See `translateIt.api` configuration
+
 ## [1.8.2] - 2022-01-21
 
 - Updated : Internal dependencies
